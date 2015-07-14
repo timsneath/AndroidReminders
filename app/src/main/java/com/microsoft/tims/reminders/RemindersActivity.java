@@ -1,5 +1,6 @@
 package com.microsoft.tims.reminders;
 
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,10 +9,14 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.sql.SQLException;
+
 
 public class RemindersActivity extends ActionBarActivity {
 
     private ListView mListView;
+    private RemindersDbAdapter mDbAdapter;
+    private RemindersSimpleCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,15 +24,38 @@ public class RemindersActivity extends ActionBarActivity {
         setContentView(R.layout.activity_reminders);
 
         mListView = (ListView) findViewById(R.id.reminders_list_view);
+        mListView.setDivider(null);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
+        mDbAdapter = new RemindersDbAdapter(this);
+        try
+        {
+            mDbAdapter.open();
+        }
+        catch(SQLException sqlEx)
+        {
+            System.out.println("RemindersActivity.onCreate threw SQLException " + sqlEx.toString());
+        }
+
+        Cursor cursor = mDbAdapter.fetchAllReminders();
+
+        String[] from = new String[]{
+                RemindersDbAdapter.COL_CONTENT
+        };
+
+        int[] to = new int[]{
+                R.id.row_text
+        };
+
+        mCursorAdapter = new RemindersSimpleCursorAdapter(
+                RemindersActivity.this,
                 R.layout.reminders_row,
-                R.id.row_text,
-                new String[] {"first record", "second record", "third record"}
+                cursor,
+                from,
+                to,
+                0
         );
 
-        mListView.setAdapter(arrayAdapter);
+        mListView.setAdapter(mCursorAdapter);
     }
 
     @Override
