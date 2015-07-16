@@ -36,26 +36,18 @@ public class RemindersActivity extends ActionBarActivity {
             System.out.println("RemindersActivity.onCreate threw SQLException " + sqlEx.toString());
         }
 
-        Cursor cursor = mDbAdapter.fetchAllReminders();
+        if (savedInstanceState == null) {
+            mDbAdapter.deleteAllReminders();
 
-        String[] from = new String[]{
-                RemindersDbAdapter.COL_CONTENT
-        };
-
-        int[] to = new int[]{
-                R.id.row_text
-        };
-
-        mCursorAdapter = new RemindersSimpleCursorAdapter(
-                RemindersActivity.this,
-                R.layout.reminders_row,
-                cursor,
-                from,
-                to,
-                0
-        );
-
-        mListView.setAdapter(mCursorAdapter);
+            mDbAdapter.createReminder("Finish reading Android Studio book", false);
+            mDbAdapter.createReminder("Prepare for Android demo", true);
+            mDbAdapter.createReminder("Figure out what a PM actually does during the day", false);
+            mDbAdapter.createReminder("Implement amazing extension for Visual Studio", true);
+            mDbAdapter.createReminder("Don't upset anyone important", true);
+            mDbAdapter.createReminder("Learn to speak English without an accent", false);
+            mDbAdapter.createReminder("Keep hydrated - drink more water", false);
+            mDbAdapter.createReminder("Figure out why Grunt and Gulp are tools, not digestive problems", false);
+        }
     }
 
     @Override
