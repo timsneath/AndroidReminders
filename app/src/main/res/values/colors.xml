@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dark_gray">#181818</color>
-    <color name="green">#003300</color>
+    <color name="dark_gray">#333333</color>
+    <color name="green">#006600</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="light_gray">#333333</color>
-    <color name="orange">#ff381a</color>
+    <color name="light_gray">#cccccc</color>
+    <color name="blue">#3366ff</color>
+    <color name="orange">#ff6633</color>
 </resources>
